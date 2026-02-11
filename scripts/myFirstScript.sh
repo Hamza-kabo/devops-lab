@@ -24,6 +24,8 @@ echo "............................................................"
 echo "All tasks performed successfully"
 
 echo "cleaning old logs"
-echo "this is a new line i added for merge"
+
+#adding a new comment to see how conflict resolution works
+
 tail -n 45 ../logs/myFirstScript.log > ../logs/myFirstScript.log
 exit 0
