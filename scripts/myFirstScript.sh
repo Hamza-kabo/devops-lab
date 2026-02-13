@@ -1,31 +1,29 @@
 #!/bin/bash
 
-#This is my first script
+# -----configuration-------
+VERSION="1.0.0"
+LOG_FILE="../logs/myFirstScript.log"
 
-exec > >(tee -a ../logs/myFirstScript.log) 2>&1
+#setting up logging
+exec> >(tee -a "$LOG_FILE") 2>&1
 
-echo ".............................................."
-echo "Execution Date: $(date)"
-echo ".............................................."
+#-----formatting helper---------
+separator() { echo "=================================================="; }
 
-echo "Hi my name is Hamza and this is my first script."
+#execution
+separator
+echo "RUNNING: myfirstScript v$VERSION"
+echo "TIMESTAMP: $(date '+%Y-%m-%d %H:%M:%S')"
+echo "USER: $USER"
+separator
 
-#adding some new features
+echo "Hi Hamza, starting system check......"
 
-#step 1 check if config folder exists
-echo "Step 1 - checking config folder"
-ls ../config && echo "Result: Step 1 succeeded" || { echo "Result: Step 1 failed !!"; exit 1; }
+#------checking disk health---------
+df -h / && echo "[OK] Disk check complete!!" || { echo "[FAIL] Disk check failed!!"; exit 1; }
 
-#step 2 check disk space
-echo "Step 2 - checking disk space..."
-df -h && echo "Result: Step 2 succeeded" || { echo "Result: Step 2 failed!!"; exit 2; }
+#cleaning old logs
+echo "Clearing old logs (keeping last 40 lines)"
+tail -n 40 "$LOG_FILE" > "$LOG_FILE.tmp" && mv "$LOG_FILE.tmp" "$LOG_FILE" || echo "[WARNING] Log rotation failed!!"
 
-echo "............................................................"
-echo "All tasks performed successfully"
-
-echo "cleaning old logs"
-
-#adding a new comment to see how conflict resolution works
-
-tail -n 45 ../logs/myFirstScript.log > ../logs/myFirstScript.log
 exit 0
